@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react'
-import { checkPathExclusion } from './utilities'
+import { checkPathInclusion } from './utilities'
 
 export interface OnRenderBodyArgs {
   scripts?: Script[]
@@ -20,7 +20,7 @@ export interface Script {
 
 export interface PluginOptions {
   excludeFiles?: RegExp | string
-  excludePaths?: RegExp | string
+  includePaths?: RegExp | string
 }
 
 let pageScripts: Script[]
@@ -47,7 +47,7 @@ export function onPreRenderHTML (
   { getHeadComponents, pathname, replaceHeadComponents, getPostBodyComponents, replacePostBodyComponents }: OnPreRenderHTMLArgs,
   pluginOptions: PluginOptions
 ): void {
-  if (process.env.NODE_ENV !== 'production' || checkPathExclusion(pathname, pluginOptions)) { // During a gatsby development build (gatsby develop) we do nothing.
+  if (process.env.NODE_ENV !== 'production' || !checkPathInclusion(pathname, pluginOptions)) { // During a gatsby development build (gatsby develop) we do nothing.
     return
   }
   replaceHeadComponents(getHeadComponentsNoJS(getHeadComponents(), pluginOptions))

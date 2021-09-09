@@ -1,7 +1,7 @@
 import { PluginOptions } from './gatsby-ssr'
 
-export function checkPathExclusion (pathname: string, pluginOptions: PluginOptions): boolean {
-  if (!pluginOptions.excludePaths) return false
+export function checkPathInclusion (pathname: string, pluginOptions: PluginOptions): boolean {
+  if (!pluginOptions.includePaths) return false
 
-  return RegExp(pluginOptions.excludePaths).test(pathname)
+  return RegExp(pluginOptions.includePaths).test(pathname)
 }
