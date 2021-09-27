@@ -23,15 +23,21 @@ exports.onRenderBody = onRenderBody;
 // Here we rely on the fact that onPreRenderHTML is called after onRenderBody so we have access to the scripts Gatsby inserted into the HTML.
 function onPreRenderHTML(_a, pluginOptions) {
     var getHeadComponents = _a.getHeadComponents, pathname = _a.pathname, replaceHeadComponents = _a.replaceHeadComponents, getPostBodyComponents = _a.getPostBodyComponents, replacePostBodyComponents = _a.replacePostBodyComponents;
-    if (process.env.NODE_ENV !== 'production' || !utilities_1.checkPathInclusion(pathname, pluginOptions)) { // During a gatsby development build (gatsby develop) we do nothing.
+    if (process.env.NODE_ENV !== 'production') { // During a gatsby development build (gatsby develop) we do nothing.
         return;
     }
-    replaceHeadComponents(getHeadComponentsNoJS(getHeadComponents(), pluginOptions));
-    replacePostBodyComponents(getPostBodyComponentsNoJS(getPostBodyComponents(), pluginOptions));
+
+    console.log("PATHNAME", pathname);
+    if (utilities_1.checkPathInclusion(pathname, pluginOptions)) {
+        replaceHeadComponents(getHeadComponentsNoJS(getHeadComponents(), pluginOptions));
+        replacePostBodyComponents(getPostBodyComponentsNoJS(getPostBodyComponents(), pluginOptions));
+    }
 }
 exports.onPreRenderHTML = onPreRenderHTML;
 function getHeadComponentsNoJS(headComponents, pluginOptions) {
-    return headComponents.filter(function (headComponent) {
+    console.log('headComponents', headComponents);
+    var filteredComponents = headComponents.filter(function (headComponent) {
+        console.log('headComponent', headComponent.props.href);
         // Not a react component and therefore not a <script>.
         if (!isReactElement(headComponent)) {
             return true;
@@ -50,6 +56,11 @@ function getHeadComponentsNoJS(headComponents, pluginOptions) {
                 script.rel === headComponent.props.rel;
         }) === undefined;
     });
+    console.log('filteredHeadComponents', filteredComponents);
+
+    return filteredComponents;
+
+
 }
 function getPostBodyComponentsNoJS(postBodyComponents, pluginOptions) {
     return postBodyComponents.filter(function (postBodyComponent) {

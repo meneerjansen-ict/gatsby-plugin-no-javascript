@@ -62,7 +62,7 @@
     "typescript": "~3.6.3"
   },
   "peerDependencies": {
-    "gatsby": "^2.0.0"
+    "gatsby": "^3.0.0"
   },
   "config": {
     "commitizen": {
