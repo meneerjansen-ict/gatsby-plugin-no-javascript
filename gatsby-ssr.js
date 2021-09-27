@@ -27,7 +27,6 @@ function onPreRenderHTML(_a, pluginOptions) {
         return;
     }
 
-    console.log("PATHNAME", pathname);
     if (utilities_1.checkPathInclusion(pathname, pluginOptions)) {
         replaceHeadComponents(getHeadComponentsNoJS(getHeadComponents(), pluginOptions));
         replacePostBodyComponents(getPostBodyComponentsNoJS(getPostBodyComponents(), pluginOptions));
@@ -35,9 +34,7 @@ function onPreRenderHTML(_a, pluginOptions) {
 }
 exports.onPreRenderHTML = onPreRenderHTML;
 function getHeadComponentsNoJS(headComponents, pluginOptions) {
-    console.log('headComponents', headComponents);
-    var filteredComponents = headComponents.filter(function (headComponent) {
-        console.log('headComponent', headComponent.props.href);
+    return headComponents.filter(function (headComponent) {
         // Not a react component and therefore not a <script>.
         if (!isReactElement(headComponent)) {
             return true;
@@ -56,11 +53,6 @@ function getHeadComponentsNoJS(headComponents, pluginOptions) {
                 script.rel === headComponent.props.rel;
         }) === undefined;
     });
-    console.log('filteredHeadComponents', filteredComponents);
-
-    return filteredComponents;
-
-
 }
 function getPostBodyComponentsNoJS(postBodyComponents, pluginOptions) {
     return postBodyComponents.filter(function (postBodyComponent) {
